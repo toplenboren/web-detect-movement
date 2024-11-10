@@ -14,6 +14,33 @@
             <li>Check your sensitivity threshold</li>
             <li>If camera detects movement, it will draw a red border around the photo</li>
         </ol>
+
+        <div class="alert-indicator">
+            <span id="alert-text">No movement detected</span>
+          </div>
+  
+          <h2>Grid for debugging</h2>
+  
+          <div class="photo-grid">
+              <div class="photo-item">
+                  <h3>Current photo</h3>
+                  <img id="photo" alt="Current photo"/>
+              </div>
+              <div class="photo-item">
+                  <h3>Previous photo</h3>
+                  <img id="prev_photo" alt="Previous photo"/>
+              </div>
+              <div class="photo-item">
+                  <h3>Difference</h3>
+                  <img id="photo_diff" alt="Difference"/>
+              </div>
+              <div class="photo-item">
+                  <h3>Last seen movement</h3>
+                  <img id="movement_picture" alt="Last seen movement"/>
+              </div>
+          </div>
+
+        <hr/>
         
         <div class="config-controls">
             <div class="control-group">
@@ -71,33 +98,6 @@
 
         <div class="camera" style="display: none;">
             <video id="video"></video>
-        </div>
-
-        <hr/>
-      
-        <div class="alert-indicator">
-          <span id="alert-text">No movement detected</span>
-        </div>
-
-        <h2>Grid for debugging</h2>
-
-        <div class="photo-grid">
-            <div class="photo-item">
-                <h3>Current photo</h3>
-                <img id="photo" alt="Current photo"/>
-            </div>
-            <div class="photo-item">
-                <h3>Previous photo</h3>
-                <img id="prev_photo" alt="Previous photo"/>
-            </div>
-            <div class="photo-item">
-                <h3>Difference</h3>
-                <img id="photo_diff" alt="Difference"/>
-            </div>
-            <div class="photo-item">
-                <h3>Last seen movement</h3>
-                <img id="movement_picture" alt="Last seen movement"/>
-            </div>
         </div>
     </div>
 
