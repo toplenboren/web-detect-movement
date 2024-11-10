@@ -38,7 +38,8 @@ class MovementDetector {
 
     // videoElement is the <video> element with stream from the camera. If not provided, stream from webcam will be used
     const videoElement = config.videoElement || document.createElement('video')
-  
+    this.videoElement = videoElement
+
     // This library can launch webcam automatically if the video element is not provided
     if (config.shouldLaunchWebcam === true) { 
       navigator.mediaDevices
