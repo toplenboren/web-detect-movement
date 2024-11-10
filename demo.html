@@ -144,18 +144,20 @@
         // You can specify a different function to run if movement is detected, for example, send an http request to your server
         let noMovementDetectedTimeout = null
         const changeTextAndPhotoOnMovement = (photoData) => {
-            // 1. Set alert text and color
             const alertIndicator = document.getElementById('alert-text');
             alertIndicator.textContent = 'Movement detected!';
             alertIndicator.style.color = 'red';
 
-            // 2. Set movement picture
-            movementPicture.setAttribute("src", photoData)
+            // Clear old image data
+            if (movementPicture.src) {
+                URL.revokeObjectURL(movementPicture.src);
+            }
+            movementPicture.setAttribute("src", photoData);
 
-            // 3. Reset alert timeout
-            noMovementDetectedTimeout = null
+            if (noMovementDetectedTimeout) {
+                clearTimeout(noMovementDetectedTimeout);
+            }
 
-            // 4. Restart alert timeout
             noMovementDetectedTimeout = setTimeout(() => {
                 alertIndicator.textContent = 'No movement detected';
                 alertIndicator.style.color = 'black';
