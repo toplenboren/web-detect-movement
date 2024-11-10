@@ -38,8 +38,7 @@ class MovementDetector {
 
     // videoElement is the <video> element with stream from the camera. If not provided, stream from webcam will be used
     const videoElement = config.videoElement || document.createElement('video')
-    this.videoElement = videoElement
-
+  
     // This library can launch webcam automatically if the video element is not provided
     if (config.shouldLaunchWebcam === true) { 
       navigator.mediaDevices
@@ -63,6 +62,11 @@ class MovementDetector {
 
     this.videoElement.setAttribute("width", width)
     this.videoElement.setAttribute("height", height)
+
+    // Magic code to make video element work on iOS :-) 
+    this.videoElement.setAttribute('autoplay', '');
+    this.videoElement.setAttribute('muted', '');
+    this.videoElement.setAttribute('playsinline', '')
 
     // Generate internal canvases for difference images and screenshot taking
 
