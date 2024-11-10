@@ -82,10 +82,21 @@
     margin: 20px 0;
 }
 
-.config-controls div {
-    margin-bottom: 12px;
+.config-controls .control-group {
+    margin-bottom: 20px;
+    padding-bottom: 15px;
+    border-bottom: 1px solid #e0e0e0;
+}
+
+.config-controls .control-group:last-child {
+    border-bottom: none;
+    
+}
+
+.config-controls .input-row {
     display: flex;
     align-items: center;
+    margin-bottom: 5px;
 }
 
 .config-controls label {
@@ -100,14 +111,22 @@
     width: 120px;
 }
 
+.config-controls .description {
+    margin-left: 150px;
+    color: #666;
+    font-size: 0.9em;
+    font-style: italic;
+}
+
 .config-controls button {
     background: #007bff;
     color: white;
     border: none;
-    padding: 10px 20px;
+    padding: 12px 24px;
     border-radius: 4px;
     cursor: pointer;
     font-size: 14px;
+    margin-top: 10px;
 }
 
 .config-controls button:hover {
