@@ -21,7 +21,7 @@ class MovementDetector {
     const height = config.height || 240
     this.height = height
 
-    // How big part of image should change to trigger movement. 0.1 means 10% of the pixels be significantly changed (not camera noise) to trigger movement. Possible values are 0 - 1.
+    // How big part of image should change to trigger movement. 0.1 means 10% of the pixels have to be significantly changed (not camera noise) to trigger movement. Possible values are 0 - 1.
     const imageThreshold = config.threshold || 0.1
     if (imageThreshold < 0 || imageThreshold > 1) {
       throw new Error('Threshold must be between 0 and 1');
