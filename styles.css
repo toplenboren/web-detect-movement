@@ -1,0 +1,115 @@
+.photo-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 20px;
+    margin: 20px;
+}
+
+.controls {
+    display: flex;
+    gap: 20px;
+    align-items: center;
+    justify-content: center;
+    margin: 10px 0;
+}
+
+.threshold-control {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.photo-item {
+    text-align: center;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+}
+
+.photo-item img {
+    max-width: 100%;
+    height: auto;
+}
+
+.photo-item h3 {
+    margin: 0 0 10px 0;
+    font-size: 16px;
+}
+
+.camera {
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+#video {
+    border-radius: 8px;
+    max-width: 100%;
+    height: auto;
+}
+
+#start-button {
+    padding: 10px 20px;
+    background-color: #007bff;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+#start-button:hover {
+    background-color: #0056b3;
+}
+
+.alert-indicator {
+    text-align: center;
+    padding: 10px;
+    margin: 10px auto;
+    border-radius: 5px;
+    font-weight: bold;
+    transition: all 0.3s ease;
+}
+
+.content-area {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 20px;
+}
+
+.config-controls {
+    background: #f5f5f5;
+    padding: 20px;
+    border-radius: 8px;
+    margin: 20px 0;
+}
+
+.config-controls div {
+    margin-bottom: 12px;
+    display: flex;
+    align-items: center;
+}
+
+.config-controls label {
+    width: 150px;
+    font-weight: 500;
+}
+
+.config-controls input {
+    padding: 8px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    width: 120px;
+}
+
+.config-controls button {
+    background: #007bff;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 14px;
+}
+
+.config-controls button:hover {
+    background: #0056b3;
+} 

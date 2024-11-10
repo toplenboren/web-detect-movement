@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Movement Detection Demo</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="content-area">
+        <h1>Detect movement demo</h1>
+        <ol>
+            <li>Approve camera access</li>
+            <li>Check your sensitivity threshold</li>
+            <li>If camera detects movement, it will draw a red border around the photo</li>
+        </ol>
+        
+        <div class="config-controls">
+            <div class="control-group">
+                <div class="input-row">
+                    <label>Interval (ms):</label>
+                    <input type="number" id="interval-input" min="100" max="10000">
+                </div>
+                <div class="description">
+                    How often to check for movement (in milliseconds). Lower values mean more frequent checks.
+                </div>
+            </div>
+            
+            <div class="control-group">
+                <div class="input-row">
+                    <label>Threshold:</label>
+                    <input type="number" id="threshold-input" min="0" max="1" step="0.1">
+                </div>
+                <div class="description">
+                    Sensitivity of movement detection (0-1). Higher values require more movement to trigger.
+                </div>
+            </div>
+            
+            <div class="control-group">
+                <div class="input-row">
+                    <label>Pixel Threshold:</label>
+                    <input type="number" id="pixel-threshold-input" min="0" max="255">
+                </div>
+                <div class="description">
+                    Used to eliminate camera noise. Start with 30 and increase if you get too many false positives.
+                </div>
+            </div>
+            
+            <div class="control-group">
+                <div class="input-row">
+                    <label>Width:</label>
+                    <input type="number" id="width-input" min="0">
+                </div>
+                <div class="description">
+                    Camera capture width in pixels. Lower values improve performance.
+                </div>
+            </div>
+            
+            <div class="control-group">
+                <div class="input-row">
+                    <label>Height:</label>
+                    <input type="number" id="height-input" min="0">
+                </div>
+                <div class="description">
+                    Camera capture height in pixels. Lower values improve performance.
+                </div>
+            </div>
+            
+            <button onclick="saveConfig()">Save Configuration</button>
+        </div>
+
+        <div class="camera" style="display: none;">
+            <video id="video"></video>
+        </div>
+
+        <hr/>
+      
+        <div class="alert-indicator">
+          <span id="alert-text">No movement detected</span>
+        </div>
+
+        <h2>Grid for debugging</h2>
+
+        <div class="photo-grid">
+            <div class="photo-item">
+                <h3>Current photo</h3>
+                <img id="photo" alt="Current photo"/>
+            </div>
+            <div class="photo-item">
+                <h3>Previous photo</h3>
+                <img id="prev_photo" alt="Previous photo"/>
+            </div>
+            <div class="photo-item">
+                <h3>Difference</h3>
+                <img id="photo_diff" alt="Difference"/>
+            </div>
+            <div class="photo-item">
+                <h3>Last seen movement</h3>
+                <img id="movement_picture" alt="Last seen movement"/>
+            </div>
+        </div>
+    </div>
+
+    <script src="movementDetector.js"></script>
+
+    <script>
+        // This is used to draw form with interval, threshold and pixel threshold controls
+        function saveConfig() {
+            const interval = document.getElementById('interval-input').value;
+            const threshold = document.getElementById('threshold-input').value;
+            const pixelThreshold = document.getElementById('pixel-threshold-input').value;
+            const width = document.getElementById('width-input').value;
+            const height = document.getElementById('height-input').value;
+            
+            const newUrl = new URL(window.location.href);
+            newUrl.searchParams.set('interval', interval);
+            newUrl.searchParams.set('threshold', threshold);
+            newUrl.searchParams.set('pixelThreshold', pixelThreshold);
+            newUrl.searchParams.set('width', width);
+            newUrl.searchParams.set('height', height);
+            window.location.href = newUrl.toString();
+        }
+
+        const urlParams = new URLSearchParams(window.location.search);
+        const takePictureIntervalMs = parseInt(urlParams.get('interval')) || 1000;
+        const threshold = parseFloat(urlParams.get('threshold')) || 0.1;
+        const pixelThreshold = parseInt(urlParams.get('pixelThreshold')) || 30;
+        const width = parseInt(urlParams.get('width')) || 320;
+        const height = parseInt(urlParams.get('height')) || 240;
+
+        document.getElementById('interval-input').value = takePictureIntervalMs;
+        document.getElementById('threshold-input').value = threshold;
+        document.getElementById('pixel-threshold-input').value = pixelThreshold;
+        document.getElementById('width-input').value = width;
+        document.getElementById('height-input').value = height;
+
+        const videoElement = document.getElementById('video')
+        const prevImgElement = document.getElementById('prev_photo')
+        const currImgElement = document.getElementById('photo')
+        const diffImgElement = document.getElementById('photo_diff')
+        const movementPicture = document.getElementById('movement_picture')
+
+        // This is just a function that will be called when movement is detected. 
+        // You can specify a different function to run if movement is detected, for example, send an http request to your server
+        let noMovementDetectedTimeout = null
+        const changeTextAndPhotoOnMovement = (photoData) => {
+            // 1. Set alert text and color
+            const alertIndicator = document.getElementById('alert-text');
+            alertIndicator.textContent = 'Movement detected!';
+            alertIndicator.style.color = 'red';
+
+            // 2. Set movement picture
+            movementPicture.setAttribute("src", photoData)
+
+            // 3. Reset alert timeout
+            noMovementDetectedTimeout = null
+
+            // 4. Restart alert timeout
+            noMovementDetectedTimeout = setTimeout(() => {
+                alertIndicator.textContent = 'No movement detected';
+                alertIndicator.style.color = 'black';
+            }, takePictureIntervalMs)
+        }
+
+        // This is used to launch webcam and detect movement.
+        // Check out /minimal-demo.html for minimal example of using this library
+        const movementDetector = new MovementDetector({
+            callback: changeTextAndPhotoOnMovement, 
+            videoElement: videoElement,
+            prevImgElement: prevImgElement,
+            currImgElement: currImgElement,
+            diffImgElement: diffImgElement,
+            takePictureIntervalMs: takePictureIntervalMs,
+            shouldLaunchWebcam: true,
+            width: width,
+            height: height,
+            pixelThreshold: pixelThreshold,
+            threshold: threshold
+          }
+        )
+
+        movementDetector.start()
+    </script>
+</body>
+</html>

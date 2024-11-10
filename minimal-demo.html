@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Movement Detection Demo</title>
+</head>
+<body>
+    <div class="content-area">
+        <h1>Detect movement demo</h1>
+        <p>Instead of demo.html, this does not have any UI and showcases minimal example of using this library</p>
+        <p>P.S Defaults are used</p>
+
+        <div class="photo-grid">
+            <div class="photo-item">
+                <h3>Last seen movement</h3>
+                <img id="movement_picture" alt="No movement is detected yet"/>
+            </div>
+        </div>
+    </div>
+
+    <script src="movementDetector.js"></script>
+
+    <script>
+        const movementPicture = document.getElementById('movement_picture')
+
+        let noMovementDetectedTimeout = null
+        const changeTextAndPhotoOnMovement = (photoData) => {
+            // Change this to http request to your server
+            movementPicture.setAttribute("src", photoData)
+        }
+
+        const movementDetector = new MovementDetector({
+            callback: changeTextAndPhotoOnMovement, 
+            shouldLaunchWebcam: true
+          }
+        )
+
+        movementDetector.start()
+    </script>
+</body>
+</html>
